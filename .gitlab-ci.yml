@@ -1,0 +1,27 @@
+# Official docker image.
+variables:
+  DOCKER_DRIVER: overlay2
+
+image: docker:latest
+
+before_script:
+  - docker login -u $DTR_USERNAME -p $DTR_PASSWORD $DTR_SERVER
+
+stages:
+  - build
+  - signer
+
+build:
+  stage: build
+  script:
+    - docker build --pull -t $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID .
+    - docker push $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID
+    - docker rmi $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID
+
+signer:
+  stage: signer
+  script:
+    - docker pull $DTR_SERVER/admin/flask:latest
+    - export DOCKER_CONTENT_TRUST=1
+    - docker push $DTR_SERVER/admin/flask:latest
+    - docker rmi $DTR_SERVER/admin/flask:latest
