@@ -21,7 +21,7 @@ build:
 signer:
   stage: signer
   script:
-    - docker pull $DTR_SERVER/admin/flask:latest
+    - docker pull $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID
     - export DOCKER_CONTENT_TRUST=1
-    - docker push $DTR_SERVER/admin/flask:latest
-    - docker rmi $DTR_SERVER/admin/flask:latest
+    - docker push $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME":latest
+    - docker rmi $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME":latest
