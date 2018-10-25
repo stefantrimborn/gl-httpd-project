@@ -14,14 +14,14 @@ stages:
 build:
   stage: build
   script:
-    - docker build --pull -t $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID .
-    - docker push $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID
-    - docker rmi $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID
+    - docker build --pull -t $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_PIPELINE_ID .
+    - docker push $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:1
+    - docker rmi $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:1
 
 signer:
   stage: signer
   script:
-    - docker pull $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_JOB_ID
+    - docker pull $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME"_build:$CI_PIPELINE_ID
     - export DOCKER_CONTENT_TRUST=1
     - docker push $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME":latest
     - docker rmi $DTR_SERVER/sttproductions/"$CI_PROJECT_NAME":latest
